@@ -1,6 +1,7 @@
 import tkinter as tk
 import requests
-
+import datetime
+import time
 def temperatura():
     ciudad = ubicacion_entry.get()
     codigo_boton()
@@ -34,7 +35,6 @@ def codigo_boton():
     Minombre.set("")
     Mipassword.set("")
     ciudad.set("")
-
 root.title("ventana")
 root.config(bg="#659c64", bd=20, relief="solid")
 
@@ -42,24 +42,25 @@ root.config(bg="#659c64", bd=20, relief="solid")
 frame = tk.Frame(root)
 frame.pack()
 
-frame.config(width=500, height=400, bg="#212222", bd=11, relief="sunken")
+frame.config(width=500, height=400, bg="#003047", bd=11, relief="sunken")
 
 # titulo
-label = tk.Label(frame, text="clima", fg="#ffffff", bg="#333635", font=('arial',17))
+label = tk.Label(frame, text="clima", fg="#ffffff", bg="#003047", font=('arial',17))
 label.grid(row=0, column=1, columnspan=2, pady=15)
 
-# reloj
-reloj = tk.Label(frame, font=("Arial", 30), text="")
-reloj.grid(row=1, column=1, columnspan=2, padx=25, pady=15)
+#imagen
+mi_imagen = tk.PhotoImage(file="soleado.png")
+mi_imagen_label = tk.Label(frame, image=mi_imagen,bg="#003047")
+mi_imagen_label.grid(row=1, column=1, columnspan=2, pady=30)
 
 # labels
-nombre = tk.Label(frame, text="Ingresa tu nombre:", fg="#ffffff", bg="#212222", font=('arial',17))
+nombre = tk.Label(frame, text="Ingresa tu nombre:", fg="#ffffff", bg="#003047", font=('arial',17))
 nombre.grid(row=2, column=1, padx=25, pady=15)
 
-password = tk.Label(frame, text="Ingresa tu contraseña:", fg="white", bg="#212222", font=('arial',17))
+password = tk.Label(frame, text="Ingresa tu contraseña:", fg="white", bg="#003047", font=('arial',17))
 password.grid(row=3, column=1, padx=25, pady=15)
 
-ubicacion_label = tk.Label(frame, text="Ingresa la ciudad:", fg="white", bg="#212222", font=('arial',17))
+ubicacion_label = tk.Label(frame, text="Ingresa la ciudad:", fg="white", bg="#003047", font=('arial',17))
 ubicacion_label.grid(row=4, column=1, padx=25, pady=15)
 
 # entrys
@@ -79,5 +80,21 @@ boton.grid(row=5, column=2, pady=10)
 # resultado
 resultado_label = tk.Label(frame, text="", font=("Arial",16), fg="white", bg="#20594e")
 resultado_label.grid(row=6, column=1, columnspan=2, pady=15)
+
+# reloj
+reloj = tk.Label(frame,fg="white", bg="#003047", font=("Arial", 30))
+reloj.grid(row=0, column=1, columnspan=2, padx=25, pady=15)
+
+def tiempo():
+    while True:
+        fecha = datetime.datetime.now()
+        hora = fecha.strftime("%H:%M:%S")
+
+        reloj.config(text=f" tiempo actual:\n {hora}")
+
+        root.update() #actualizar la interfaz (tuve que consultarlo)
+        time.sleep(0.5) 
+
+tiempo()
 
 root.mainloop()
