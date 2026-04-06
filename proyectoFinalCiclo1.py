@@ -2,7 +2,9 @@ import tkinter as tk
 import requests
 import datetime
 import time
-def temperatura():
+
+#funcion para hayar temperatura segun la region
+def obtener_temperatura():
     ciudad = ubicacion_entry.get()
 
     API_KEY = "40d14b585fe6f0ba7ca641badf5e773e"
@@ -28,18 +30,21 @@ def temperatura():
             mi_imagen_label.config(image=imagen_calor)
 
         
-        resultado_label.config(text=f"{tempC:.2f} °C | {tempK:.2f} K | {tempF:.2f} °F")
+        resultado_label.config(text=f"{tempC} °C | {tempK} K | {tempF} °F")
+
+        #condicionales para que los checkbuttons den la temperatura deseada (tuve que consultarlo)
 
         texto = ""
 
+
         if c.get() == 1:
-            texto += f"{tempC:.2f} °C | "
+            texto += f"{tempC} °C | "
 
         if f.get() == 1:
-            texto += f"{tempF:.2f} °F | "
+            texto += f"{tempF} °F | "
 
         if k.get() == 1:
-            texto += f"{tempK:.2f} K | "
+            texto += f"{tempK} K | "
 
         resultado.config(text=texto)
 
@@ -50,6 +55,7 @@ def temperatura():
 root = tk.Tk()
 
 # variables
+
 gen = tk.IntVar()
 Miapellido = tk.StringVar()
 Micorreo = tk.StringVar()
@@ -69,7 +75,7 @@ def codigo_boton():
     gen.set(0)
 
 root.title("ventana")
-root.config(bg="#659c64", bd=20, relief="solid")
+root.config(bg="#000000", bd=20, relief="solid")
 
 # frame
 frame = tk.Frame(root)
@@ -78,11 +84,12 @@ frame.pack()
 frame.config(width=500, height=400, bg="#003047", bd=11, relief="sunken")
 
 # reloj
-reloj = tk.Label(frame, fg="white", bg="#003047", font=("Arial", 20))
+reloj = tk.Label(frame, fg="white", bg="#003047", font=("Times New Roman", 20))
 reloj.grid(row=0, column=0, columnspan=3, padx=25, pady=15)
 
-dia = tk.Label(frame, fg="#ffffff", bg="#003047", font=('arial',15))
+dia = tk.Label(frame, fg="#ffffff", bg="#003047", font=("Times New Roman",17))
 dia.grid(row=1, column=0, columnspan=3, pady=20,padx=30)
+
 #imagenes
 imagen_frio = tk.PhotoImage(file="frio.png")
 imagen_templado = tk.PhotoImage(file="templado.png")
@@ -143,7 +150,7 @@ otro.grid(row=7, column=2, pady=5)
 boton = tk.Button(frame, text="enviar", command=codigo_boton, font=("Arial",14), bg="#000000", fg="white", padx=20)
 boton.grid(row=8, column=1, columnspan=1, pady=10)
 
-botont = tk.Button(frame, text="encontrar clima", command=temperatura, font=("Arial",14), bg="#000000", fg="white", padx=20)
+botont = tk.Button(frame, text="encontrar clima", command=obtener_temperatura, font=("Arial",14), bg="#000000", fg="white", padx=20)
 botont.grid(row=8, column=0, columnspan=1, pady=10)
 
 # checkbuttons
@@ -155,23 +162,23 @@ check2.grid(row=2,column=2,rowspan=3)
 
 check3= tk.Checkbutton(frame, text="K", bg="red", font=('arial',15),variable=k)
 check3.grid(row=2,column=2,rowspan=5)
-
+#resultado checkbuttons
 resultado=tk.Label(frame, text="", font=("Arial",10), fg="white", bg="#003047")
 resultado.grid(row=3,column=2,rowspan=1)
 
-# resultado completo
+# resultado
 resultado_label = tk.Label(frame, text="", font=("Arial",16), fg="white", bg="#003047")
 resultado_label.grid(row=9, column=0, columnspan=3, pady=15)
 
-
+#hora en tiempo real
 def tiempo():
     while True:
         fecha = datetime.datetime.now()
         hora = fecha.strftime("%H:%M:%S")
         date= fecha.strftime("%A,%d-%B-%Y")
 
-        reloj.config(text=f"Tiempo actual:\n{hora}")
-        dia.config(text=f"Clima hoy: {date}")
+        reloj.config(text=f"  (●'◡'●) ◊◈◊Tiempo actual:◊◈◊ (●'◡'●)  \n{hora}")
+        dia.config(text=f"◊◈◊Clima hoy: {date}◊◈◊")
 
         root.update()
         time.sleep(0.5)
@@ -179,3 +186,20 @@ def tiempo():
 tiempo()
 
 root.mainloop()
+
+"""
+ANOTACIONES:----------------------------------------------------------------------->
+1.los checkbuttons funcionan al presionar el boton de encontrar clima despues de indicar la unidad en el checkbutton
+ya que, no sabia si los checkbuttons se tenian que comportar asi o que en el caso contrario era con un command poner el resultado
+sin la necesidad de un boton para eso, en tal caso habria que poner las variables tempC,tempF y tempK como globales en vez de funcionar
+solo en la funcion de temperatura.
+
+2.Hubieron  algunas cosas que tuve que consultar, estas cosas que tuve que investigar estaran indicadas en un comentario
+
+3 hay dos botones, el boton de encontrar temperatura es la que se usa para obtener la temperatura en el entry y en en los
+checkbuttons, el boton de enviar es aquel que 'envia' el formulario y limpia todo lo puesto en los entrys
+
+HAGO ESTAS ANOTACIONES YA QUE AUNQUE MI PROGRAMA CUMPLE LOS OBJETIVOS DICHOS EN EL DOCUMENTO, HAY COSAS QUE NO RECUERDO
+SOBRE EL PROGRAMA QUE EL PROFESOR NOS DIO DE EJEMPLO EN LA CLASE Y ESTO PODRIA CAUSAR DIFERENCIAS EN EL FUNCIONAMIENTO DE 
+FUNCIONES Y BOTONES EN PARTICULAR :P 
+-------------------------------------------------------------------------------------------------------------------------------------"""
